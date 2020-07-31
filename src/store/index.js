@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     tls: true,
     chaincodeLabel: "",
-    chaincodeFilename: "-------",
+    chaincodeFilename: "",
     chaincodeLanguage: "",
     chaincodePath: "",
     packageId: "",
@@ -18,7 +18,7 @@ export default new Vuex.Store({
     version: "",
     chaincodeName: "",
     cafile: "",
-    targettedPeers: []
+    targettedPeers: [],
   },
   mutations: {
     chaincodeLabel(state, label) {
@@ -59,7 +59,7 @@ export default new Vuex.Store({
     },
     tls(state, x) {
       state.tls = x;
-    }
+    },
   },
 
   getters: {
@@ -101,8 +101,8 @@ export default new Vuex.Store({
     },
     tls(state) {
       return state.tls;
-    }
+    },
   },
   actions: {},
-  modules: {}
+  modules: {},
 });

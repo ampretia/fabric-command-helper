@@ -47,7 +47,7 @@
             TLS Enabled
           </label>
           <div class="control">
-            <input type="checkbox" :value="tls" @input="updateTLS" />
+            <input v-model="tlsEnabled" type="checkbox" />
           </div>
         </div>
 
@@ -59,6 +59,7 @@
               type="text"
               placeholder="cp_0"
               :value="ordererTLSHostname"
+              :disabled="!tlsEnabled"
               @input="updateOrdererTLSHostname"
             />
           </div>
@@ -72,6 +73,7 @@
               type="text"
               placeholder="cp_0"
               :value="cafile"
+              :disabled="!tlsEnabled"
               @input="updateCAFile"
             />
           </div>
@@ -87,7 +89,7 @@ import { mapState, mapGetters /*, mapActions*/ } from "vuex";
 export default {
   computed: {
     ...mapState([
-      "tls",
+      //    "tls",
       "chaincodeLabel",
       "chaincodeFilename",
       "chaincodeLanguage",
@@ -99,10 +101,10 @@ export default {
       "sequence",
       "version",
       "chaincodeName",
-      "cafile"
+      "cafile",
     ]),
     ...mapGetters([
-      "tls",
+      // "tls",
       "chaincodeLabel",
       "chaincodeFilename",
       "chaincodeLanguage",
@@ -114,11 +116,21 @@ export default {
       "sequence",
       "version",
       "chaincodeName",
-      "cafile"
+      "cafile",
     ]),
     packageCommand() {
       return `peer lifecycle chaincode package ${this.$store.state.chaincodeFilename} --lang ${this.$store.state.chaincodeLanguage} --path ${this.$store.state.chaincodePath} --label ${this.$store.state.chaincodeLabel}`;
-    }
+    },
+    tlsEnabled: {
+      get() {
+        console.log("Getting to " + this.$store.state.tls);
+        return this.$store.getters.tls;
+      },
+      set(value) {
+        console.log("Setting to " + value);
+        this.$store.commit("tls", value);
+      },
+    },
   },
   methods: {
     updateLabel(e) {
@@ -160,8 +172,8 @@ export default {
     },
     updateTLS(e) {
       this.$store.commit("tls", e.target.value);
-    }
-  }
+    },
+  },
 };
 </script>
 

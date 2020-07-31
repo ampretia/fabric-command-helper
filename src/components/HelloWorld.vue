@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <command></command>
+      <command />
     </div>
   </section>
 </template>
@@ -10,8 +10,8 @@
 import Command from "./Command";
 export default {
   components: {
-    Command
-  }
+    Command,
+  },
 };
 </script>
 

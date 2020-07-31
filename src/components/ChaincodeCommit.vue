@@ -88,7 +88,7 @@ export default {
       "sequence",
       "version",
       "contractName",
-      "caFile"
+      "caFile",
     ]),
     ...mapGetters([
       "chaincodeLabel",
@@ -102,11 +102,11 @@ export default {
       "sequence",
       "version",
       "contractName",
-      "caFile"
+      "caFile",
     ]),
     packageCommand() {
       return `peer lifecycle chaincode package ${this.$store.state.chaincodeFilename} --lang ${this.$store.state.chaincodeLanguage} --path ${this.$store.state.chaincodePath} --label ${this.$store.state.chaincodeLabel}`;
-    }
+    },
   },
   methods: {
     updateLabel(e) {
@@ -147,8 +147,8 @@ export default {
     },
     updateTLS(e) {
       this.$store.commit("tls", e.target.value);
-    }
-  }
+    },
+  },
 };
 </script>
 

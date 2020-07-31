@@ -5,151 +5,143 @@
         <div class="field">
           <label class="label">Version</label>
           <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="cp_0"
-              value="cc_label"
-            />
+            <input v-model="version" class="input" type="text" placeholder="cp_0" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Sequence</label>
           <div class="control">
+            <input v-model="sequence" class="input" type="text" placeholder="1" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Orderer Hostname:Port</label>
+          <div class="control">
+            <input v-model="ordererHost" class="input" type="text" placeholder="localhost:7052" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Orderer TLS Hostname override</label>
+          <div class="control">
             <input
+              v-model="ordererTLSHostname"
               class="input"
               type="text"
               placeholder="cp_0"
-              value="cc_label"
+              :disabled="!tlsEnabled"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Channel ID</label>
+          <div class="control">
+            <input v-model="channelid" class="input" type="text" placeholder="mychannel" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Chaincode Name</label>
+          <div class="control">
+            <input v-model="chaincodeName" class="input" type="text" placeholder="assetcontract" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Package ID</label>
+          <div class="control">
+            <input v-model="packageId" class="input" type="text" placeholder="xxxx:00" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">TLS Enabled</label>
+          <div class="control">
+            <input v-model="tlsEnabled" type="checkbox" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">CAFile</label>
+          <div class="control">
+            <input
+              v-model="cafile"
+              class="input"
+              type="text"
+              placeholder="cp_0"
+              :disabled="!tlsEnabled"
             />
           </div>
         </div>
       </div>
+      <!--column-->
 
       <div class="column">
         <div class="card">
           <div class="card-content">
-            <p class="has-background-danger-light my-2">
-              Repeat for each peer:
-            </p>
+            <p class="has-background-danger-light my-2">Repeat for each peer:</p>
 
             <div class="content">
-              <div class="command-contents">
-                peer lifecycle chaincode approveformyorg --orderer
-                localhost:7050 --ordererTLSHostnameOverride orderer.example.com
-                \ --channelID mychannel \ --name papercontract \ -v 0 \
-                --package-id $PACKAGE_ID \ --sequence 1 \ --tls \ --cafile
-                $ORDERER_CA
-              </div>
+              <div class="command-contents">{{approveCommand}}</div>
             </div>
           </div>
           <div class="card-footer">
-            <button v-clipboard:copy="packageCommand">
-              Copy
-            </button>
+            <button v-clipboard:copy="approveCommand">Copy</button>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
-            <p class="has-background-info-light my-2">
-              Run to check commit readdiness:
-            </p>
+            <p class="has-background-info-light my-2">Run to check commit readdiness:</p>
             <div class="content">
               <div class="command-contents">
-                peer lifecycle chaincode checkcommitreadiness --channelID
-                mychannel --name papercontract -v 0 --sequence 1
+                {{checkcommitCommand}}
               </div>
             </div>
           </div>
           <div class="card-footer">
-            <button v-clipboard:copy="packageCommand">
-              Copy
-            </button>
+            <button v-clipboard:copy="checkcommitCommand">Copy</button>
           </div>
         </div>
-
-        Repeat for each peer
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters /*, mapActions*/ } from "vuex";
+function mapBidirectional(propname) {
+  return {
+    get() {
+      return this.$store.getters[propname];
+    },
+    set(value) {
+      this.$store.commit(propname, value);
+    }
+  };
+}
+
 export default {
   computed: {
-    ...mapState([
-      "chaincodeLabel",
-      "chaincodeFilename",
-      "chaincodeLanguage",
-      "chaincodePath",
-      "packageId",
-      "ordererHost",
-      "ordererTLSHostname",
-      "channelid",
-      "sequence",
-      "version",
-      "contractName",
-      "caFile"
-    ]),
-    ...mapGetters([
-      "chaincodeLabel",
-      "chaincodeFilename",
-      "chaincodeLanguage",
-      "chaincodePath",
-      "packageId",
-      "ordererHost",
-      "ordererTLSHostname",
-      "channelid",
-      "sequence",
-      "version",
-      "contractName",
-      "caFile"
-    ]),
-    packageCommand() {
-      return `peer lifecycle chaincode package ${this.$store.state.chaincodeFilename} --lang ${this.$store.state.chaincodeLanguage} --path ${this.$store.state.chaincodePath} --label ${this.$store.state.chaincodeLabel}`;
-    }
-  },
-  methods: {
-    updateLabel(e) {
-      this.$store.commit("chaincodeLabel", e.target.value);
+    version: mapBidirectional("version"),
+    sequence: mapBidirectional("sequence"),
+    ordererHost: mapBidirectional("ordererHost"),
+    channelid: mapBidirectional("channelid"),
+    chaincodeName: mapBidirectional("chaincodeName"),
+    packageId: mapBidirectional("packageId"),
+    tlsEnabled: mapBidirectional("tls"),
+    ordererTLSHostname: mapBidirectional("ordererTLSHostname"),
+    cafile: mapBidirectional("cafile"),
+    checkcommitCommand() {
+      return `peer lifecycle chaincode checkcommitreadiness --channelID ${this.channelid} --name ${this.chaincodeName} -v ${this.version} --sequence ${this.sequence}`;
     },
-    updateFilename(e) {
-      this.$store.commit("chaincodeFilename", e.target.value);
-    },
-    updatePath(e) {
-      this.$store.commit("chaincodePath", e.target.value);
-    },
-    updateLanguage(e) {
-      this.$store.commit("chaincodeLanguage", e.target.value);
-    },
-    updatePackageId(e) {
-      this.$store.commit("packageId", e.target.value);
-    },
-    updateOrdererHost(e) {
-      this.$store.commit("ordererHost", e.target.value);
-    },
-    updateOrdererTLSHostname(e) {
-      this.$store.commit("ordererTLSHostname", e.target.value);
-    },
-    updateChannelid(e) {
-      this.$store.commit("channelid", e.target.value);
-    },
-    updateSequence(e) {
-      this.$store.commit("sequence", e.target.value);
-    },
-    updateVersion(e) {
-      this.$store.commit("version", e.target.value);
-    },
-    updateContractName(e) {
-      this.$store.commit("contractName", e.target.value);
-    },
-    updateCAFile(e) {
-      this.$store.commit("cafile", e.target.value);
-    },
-    updateTLS(e) {
-      this.$store.commit("tls", e.target.value);
+    approveCommand() {
+      if (this.tlsEnabled) {
+        return `peer lifecycle chaincode approveformyorg --orderer ${this.ordererHost} --ordererTLSHostnameOverride ${this.ordererTLSHostname}----channelID ${this.channelid} --name ${this.chaincodeName} -v ${this.version} --package-id ${this.packageId} --sequence ${this.sequence} --tls --cafile ${this.cafile}`;
+      } else {
+        return `peer lifecycle chaincode approveformyorg --orderer ${this.ordererHost} --channelID ${this.channelid} --name ${this.chaincodeName} -v ${this.version} --package-id ${this.packageId} --sequence ${this.sequence}`;
+      }
     }
   }
 };

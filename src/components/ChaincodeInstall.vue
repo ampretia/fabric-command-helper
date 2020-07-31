@@ -5,39 +5,21 @@
         <div class="field">
           <label class="label">Archive Filename</label>
           <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="cp.tar.gz"
-              :value="chaincodeFilename"
-              @input="updateFilename"
-            />
+            <input v-model="chaincodeFilename" class="input" type="text" placeholder="cp.tar.gz" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Label</label>
           <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="cp_0"
-              :value="chaincodeLabel"
-              @input="updateLabel"
-            />
+            <input v-model="chaincodeLabel" class="input" type="text" placeholder="cp_0" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Path</label>
           <div class="control">
-            <input
-              class="input"
-              type="text"
-              placeholder="./contract"
-              :value="chaincodePath"
-              @input="updatePath"
-            />
+            <input v-model="chaincodePath" class="input" type="text" placeholder="./contract" />
           </div>
         </div>
 
@@ -45,27 +27,11 @@
           <label class="label">Language</label>
           <div class="control">
             <div class="select">
-              <select :value="chaincodeLanguage" @input="updateLanguage">
+              <select v-model="chaincodeLanguage">
                 <option>node</option>
                 <option>java</option>
                 <option>go</option>
               </select>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div class="container">
-          <p class="has-text-info is-size-5">Enter the package ID here</p>
-          <div class="field">
-            <label class="label">PackageID</label>
-            <div class="control">
-              <input
-                class="input"
-                type="text"
-                placeholder="cp_0"
-                :value="chaincodeLabel"
-                @input="updateLabel"
-              />
             </div>
           </div>
         </div>
@@ -75,15 +41,7 @@
         <div class="card mb-2">
           <div class="card-content">
             <div class="content">
-              <div class="command-contents">
-                peer lifecycle chaincode package
-                <p class="has-background-success-light">
-                  {{ chaincodeFilename }}
-                </p>
-                --lang {{ chaincodeLanguage }} --path
-                {{ chaincodePath }} --label
-                {{ chaincodeLabel }}
-              </div>
+              <div class="command-contents">{{packageCommand}}</div>
             </div>
           </div>
           <div class="card-footer">
@@ -93,31 +51,45 @@
 
         <div class="card mb-2">
           <div class="card-content">
-            <p class="has-background-danger-light my-2">
-              Repeat for each peer:
-            </p>
+            <p class="has-background-danger-light my-2">Repeat for each peer:</p>
 
             <div class="content">
-              <div class="command-contents">
-                peer lifecycle chaincode install {{ chaincodeFilename }}
-              </div>
+              <div class="command-contents">{{ installCommand }}</div>
             </div>
           </div>
           <div class="card-footer">
-            <button v-clipboard:copy="packageCommand">Copy</button>
+            <button v-clipboard:copy="installCommand">Copy</button>
           </div>
         </div>
+      </div>
+    </div>
 
+    <hr />
+
+    <div class="columns">
+      <div class="column">
+        <div class="container">
+          <p class="has-text-info is-size-5">Enter the package ID here</p>
+          <div class="field">
+            <label class="label">PackageID</label>
+            <div class="control">
+              <input v-model="packageId" class="input" type="text" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
         <div class="card">
           <div class="card-content">
             <p class="has-background-info-light my-2">To find package ids:</p>
 
             <div class="content">
-              <div class="command-contents"></div>
+              <div class="command-contents">{{queryCommand}}</div>
             </div>
           </div>
           <div class="card-footer">
-            <button v-clipboard:copy="packageCommand">Copy</button>
+            <button v-clipboard:copy="queryCommand">Copy</button>
           </div>
         </div>
       </div>
@@ -126,38 +98,31 @@
 </template>
 
 <script>
-import { mapState, mapGetters /*, mapActions*/ } from "vuex";
-
+function mapBidirectional(propname) {
+  return {
+    get() {
+      return this.$store.getters[propname];
+    },
+    set(value) {
+      this.$store.commit(propname, value);
+    }
+  };
+}
 export default {
   computed: {
-    ...mapState([
-      "chaincodeLabel",
-      "chaincodeFilename",
-      "chaincodeLanguage",
-      "chaincodePath"
-    ]),
-    ...mapGetters([
-      "chaincodeLabel",
-      "chaincodeFilename",
-      "chaincodeLanguage",
-      "chaincodePath"
-    ]),
+    chaincodeFilename: mapBidirectional("chaincodeFilename"),
+    chaincodeLanguage: mapBidirectional("chaincodeLanguage"),
+    chaincodePath: mapBidirectional("chaincodePath"),
+    chaincodeLabel: mapBidirectional("chaincodeLabel"),
+    packageId: mapBidirectional("packageId"),
     packageCommand() {
-      return `peer lifecycle chaincode package ${this.$store.state.chaincodeFilename} --lang ${this.$store.state.chaincodeLanguage} --path ${this.$store.state.chaincodePath} --label ${this.$store.state.chaincodeLabel}`;
-    }
-  },
-  methods: {
-    updateLabel(e) {
-      this.$store.commit("chaincodeLabel", e.target.value);
+      return `peer lifecycle chaincode package ${this.chaincodeFilename} --lang ${this.chaincodeLanguage} --path ${this.chaincodePath} --label ${this.chaincodeLabel}`;
     },
-    updateFilename(e) {
-      this.$store.commit("chaincodeFilename", e.target.value);
+    installCommand() {
+      return `peer lifeyclce chaincode install ${this.chaincodeFilename}`;
     },
-    updatePath(e) {
-      this.$store.commit("chaincodePath", e.target.value);
-    },
-    updateLanguage(e) {
-      this.$store.commit("chaincodeLanguage", e.target.value);
+    queryCommand() {
+      return `peer lifycycle chaincode queryinstalled`;
     }
   }
 };

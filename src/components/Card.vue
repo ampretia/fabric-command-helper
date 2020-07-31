@@ -39,9 +39,8 @@
 
 <script>
 export default {
-  props: ["num"]
+  props: ["num"],
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
