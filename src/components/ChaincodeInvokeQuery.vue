@@ -10,13 +10,13 @@
             <div class="field">
               <label class="label">Host:Port</label>
               <p class="control is-expanded">
-                <input v-model="org1peer" class="input" type="text" />
+                <input v-model="org1peer" class="input"  type="text"  />
               </p>
             </div>
             <div class="field">
               <label class="label">TLS RootCert</label>
               <p class="control is-expanded">
-                <input v-model="org1peertlscert" class="input" type="text" :disabled="!tlsEnabled" />
+                <input v-model="org1peertlscert" class="input" type="text"   :disabled="!tlsEnabled"/>
               </p>
             </div>
           </div>
@@ -36,51 +36,43 @@
             <div class="field">
               <label class="label">TLS RootCert</label>
               <p class="control is-expanded">
-                <input v-model="org2peertlscert" class="input" type="text" :disabled="!tlsEnabled" />
+                <input v-model="org2peertlscert" class="input" type="text"  :disabled="!tlsEnabled"/>
               </p>
             </div>
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Version</label>
-          <div class="control">
-            <input v-model="version" class="input" type="text" />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Sequence</label>
-          <div class="control">
-            <input v-model="sequence" class="input" type="text" />
-          </div>
-        </div>
-
-        <div class="field">
           <label class="label">Orderer Hostname:Port</label>
           <div class="control">
-            <input v-model="ordererHost" class="input" type="text" />
+            <input v-model="ordererHost" class="input" type="text"  />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Orderer TLS Hostname override</label>
           <div class="control">
-            <input v-model="ordererTLSHostname" class="input" type="text" :disabled="!tlsEnabled" />
+            <input
+              v-model="ordererTLSHostname"
+              class="input"
+              type="text"
+             
+              :disabled="!tlsEnabled"
+            />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Channel ID</label>
           <div class="control">
-            <input v-model="channelid" class="input" type="text" />
+            <input v-model="channelid" class="input" type="text"  />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Chaincode Name</label>
           <div class="control">
-            <input v-model="chaincodeName" class="input" type="text" />
+            <input v-model="chaincodeName" class="input" type="text"  />
           </div>
         </div>
 
@@ -94,21 +86,37 @@
         <div class="field">
           <label class="label">CAFile</label>
           <div class="control">
-            <input v-model="cafile" class="input" type="text" :disabled="!tlsEnabled" />
+            <input
+              v-model="cafile"
+              class="input"
+              type="text"
+            
+              :disabled="!tlsEnabled"
+            />
           </div>
         </div>
+
+        <div class="field">
+          <label class="label">Arguments</label>
+          <div class="control">
+            <input v-model="args" class="input" type="text"  />
+          </div>
+        </div> 
+
       </div>
 
       <div class="column">
         <div class="card">
           <div class="card-content">
-            <p class="has-background-info-light my-2">Run on only one peer to commit across network:</p>
+            <p class="has-background-info-light my-2">Run on to invoke</p>
             <div class="content">
-              <div class="command-contents">{{commitCommand}}</div>
+              <div class="command-contents">
+                {{invokeCommand}}
+              </div>
             </div>
           </div>
           <div class="card-footer">
-            <button v-clipboard:copy="commitCommand">Copy</button>
+            <button v-clipboard:copy="invokeCommand">Copy</button>
           </div>
         </div>
       </div>
@@ -143,11 +151,12 @@ export default {
     org2peer: mapBidirectional("org2peer"),
     org1peertlscert: mapBidirectional("org1peertlscert"),
     org2peertlscert: mapBidirectional("org2peertlscert"),
-    commitCommand() {
+    args: mapBidirectional("arguments"),
+    invokeCommand() {
       if (this.tlsEnabled) {
-        return `peer lifecycle chaincode commit -o ${this.ordererHost}--peerAddresses ${this.org1peer} --tlsRootCertFiles ${this.org1peertlscert}  --peerAddresses ${this.org2peer} --tlsRootCertFiles ${this.org2peertlscert} --ordererTLSHostnameOverride ${this.ordererTLSHostname} --channelID ${this.channelid} --name ${this.chaincodeName} -v ${this.version} --sequence ${this.sequence} --tls --cafile ${this.cafile} --waitForEvent`;
+        return `peer lifecycle chaincode invoke -o ${this.ordererHost}--peerAddresses ${this.org1peer} --tlsRootCertFiles ${this.org1peertlscert}  --peerAddresses ${this.org2peer} --tlsRootCertFiles ${this.org2peertlscert} --ordererTLSHostnameOverride ${this.ordererTLSHostname} --channelID ${this.channelid} --name ${this.chaincodeName} --tls --cafile ${this.cafile} -c ${this.args} --waitForEvent`;
       } else {
-        return `peer lifecycle chaincode commit -o ${this.ordererHost}--peerAddresses ${this.org1peer}  --peerAddresses ${this.org2peer} --channelID ${this.channelid} --name ${this.chaincodeName} -v ${this.version} --sequence ${this.sequence} --waitForEvent`;
+        return `peer lifecycle chaincode invoke -o ${this.ordererHost}--peerAddresses ${this.org1peer}   --peerAddresses ${this.org2peer} --channelID ${this.channelid} --name ${this.chaincodeName}  -c ${this.args} --waitForEvent`;
       }
     }
   }

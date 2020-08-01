@@ -5,55 +5,49 @@
         <div class="field">
           <label class="label">Version</label>
           <div class="control">
-            <input v-model="version" class="input" type="text" placeholder="cp_0" />
+            <input v-model="version" class="input" type="text" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Sequence</label>
           <div class="control">
-            <input v-model="sequence" class="input" type="text" placeholder="1" />
+            <input v-model="sequence" class="input" type="text" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Orderer Hostname:Port</label>
           <div class="control">
-            <input v-model="ordererHost" class="input" type="text" placeholder="localhost:7052" />
+            <input v-model="ordererHost" class="input" type="text" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Orderer TLS Hostname override</label>
           <div class="control">
-            <input
-              v-model="ordererTLSHostname"
-              class="input"
-              type="text"
-              placeholder="cp_0"
-              :disabled="!tlsEnabled"
-            />
+            <input v-model="ordererTLSHostname" class="input" type="text" :disabled="!tlsEnabled" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Channel ID</label>
           <div class="control">
-            <input v-model="channelid" class="input" type="text" placeholder="mychannel" />
+            <input v-model="channelid" class="input" type="text" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Chaincode Name</label>
           <div class="control">
-            <input v-model="chaincodeName" class="input" type="text" placeholder="assetcontract" />
+            <input v-model="chaincodeName" class="input" type="text" />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Package ID</label>
           <div class="control">
-            <input v-model="packageId" class="input" type="text" placeholder="xxxx:00" />
+            <input v-model="packageId" class="input" type="text" />
           </div>
         </div>
 
@@ -67,13 +61,7 @@
         <div class="field">
           <label class="label">CAFile</label>
           <div class="control">
-            <input
-              v-model="cafile"
-              class="input"
-              type="text"
-              placeholder="cp_0"
-              :disabled="!tlsEnabled"
-            />
+            <input v-model="cafile" class="input" type="text" :disabled="!tlsEnabled" />
           </div>
         </div>
       </div>
@@ -96,9 +84,7 @@
           <div class="card-content">
             <p class="has-background-info-light my-2">Run to check commit readdiness:</p>
             <div class="content">
-              <div class="command-contents">
-                {{checkcommitCommand}}
-              </div>
+              <div class="command-contents">{{checkcommitCommand}}</div>
             </div>
           </div>
           <div class="card-footer">

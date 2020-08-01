@@ -1,13 +1,5 @@
 <template>
   <section class="section">
-    <!-- <div class="container mb-5">
-      <div class="notification">
-        <p class="title has-text-info has-background-gray">Shared Information</p>
-      </div>
-      <div class="container">
-        <Shared></Shared>
-      </div>
-    </div>-->
     <div class="container mb-5">
       <div class="notification">
         <p class="title has-text-info has-background-gray">Chaincode: Package and Install</p>
@@ -24,12 +16,20 @@
         <ChaincodeApprove></ChaincodeApprove>
       </div>
     </div>
-    <div class="container">
+    <div class="container mb-5">
       <div class="notification">
         <p class="title has-text-info has-background-gray">Chaincode: Commit</p>
       </div>
-      <div class="container">
+      <div class="container mb-5">
         <ChaincodeCommit></ChaincodeCommit>
+      </div>
+    </div>
+    <div class="container mb-5">
+      <div class="notification">
+        <p class="title has-text-info has-background-gray">Chaincode: Invoke</p>
+      </div>
+      <div class="container mb-5">
+        <ChaincodeInvoke></ChaincodeInvoke>
       </div>
     </div>
   </section>
@@ -37,17 +37,18 @@
 
 <script>
 // @ is an alias to /src
-//import Command from "@/components/Command.vue";
 import ChaincodeInstall from "@/components/ChaincodeInstall.vue";
 import ChaincodeApprove from "@/components/ChaincodeApprove";
 import ChaincodeCommit from "@/components/ChaincodeCommit.vue";
-// import Shared from "@/components/Shared.vue";
+import ChaincodeInvoke from "@/components/ChaincodeInvokeQuery.vue";
+
 export default {
   name: "Home",
   components: {
     ChaincodeInstall,
     ChaincodeApprove,
-    ChaincodeCommit
+    ChaincodeCommit,
+    ChaincodeInvoke
   }
 };
 </script>

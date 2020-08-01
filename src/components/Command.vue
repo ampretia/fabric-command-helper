@@ -5,7 +5,7 @@
         <div class="field">
           <label class="label">Name</label>
           <div class="control">
-            <input class="input" type="text" placeholder="Text input" />
+            <input class="input" type="text"  />
           </div>
         </div>
 
@@ -15,7 +15,7 @@
             <input
               class="input is-success"
               type="text"
-              placeholder="Text input"
+             
               value="bulma"
             />
             <span class="icon is-small is-left">
@@ -34,7 +34,7 @@
             <input
               class="input is-danger"
               type="email"
-              placeholder="Email input"
+            
               value="hello@"
             />
             <span class="icon is-small is-left">

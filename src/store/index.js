@@ -18,7 +18,11 @@ export default new Vuex.Store({
     version: "",
     chaincodeName: "",
     cafile: "",
-    targettedPeers: [],
+    org1peer: "",
+    org2peer: "",
+    org1peertlscert: "",
+    org2peertlscert: "",
+    arguments: ""
   },
   mutations: {
     chaincodeLabel(state, label) {
@@ -60,6 +64,21 @@ export default new Vuex.Store({
     tls(state, x) {
       state.tls = x;
     },
+    org1peer(state, x) {
+      state.org1peer = x;
+    },
+    org2peer(state, x) {
+      state.org2peer = x;
+    },
+    org1peertlscert(state, x) {
+      state.org1peertlscert = x;
+    },
+    org2peertlscert(state, x) {
+      state.org2peertlscert = x;
+    },
+    arguments(state, x) {
+      state.arguments = x;
+    }
   },
 
   getters: {
@@ -102,7 +121,22 @@ export default new Vuex.Store({
     tls(state) {
       return state.tls;
     },
+    org1peer(state) {
+      return state.org1peer;
+    },
+    org2peer(state) {
+      return state.org2peer;
+    },
+    org1peertlscert(state) {
+      return state.org1peertlscert;
+    },
+    org2peertlscert(state) {
+      return state.org2peertlscert;
+    },
+    arguments(state) {
+      return state.arguments;
+    }
   },
   actions: {},
-  modules: {},
+  modules: {}
 });

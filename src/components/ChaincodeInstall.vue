@@ -5,21 +5,21 @@
         <div class="field">
           <label class="label">Archive Filename</label>
           <div class="control">
-            <input v-model="chaincodeFilename" class="input" type="text" placeholder="cp.tar.gz" />
+            <input v-model="chaincodeFilename" class="input" type="text"  />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Label</label>
           <div class="control">
-            <input v-model="chaincodeLabel" class="input" type="text" placeholder="cp_0" />
+            <input v-model="chaincodeLabel" class="input" type="text"  />
           </div>
         </div>
 
         <div class="field">
           <label class="label">Path</label>
           <div class="control">
-            <input v-model="chaincodePath" class="input" type="text" placeholder="./contract" />
+            <input v-model="chaincodePath" class="input" type="text"  />
           </div>
         </div>
 
